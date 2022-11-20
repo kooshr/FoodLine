@@ -1,18 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import { StyleSheet, Button, View, Text } from "react-native";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "/Users/rithwikvaidun/food-delivery/firebase.js";
+
 export default function App() {
-  const [code, setCode] = useState("hello");
-  //const [submitted, setSubmitStatus] = useState(false);
+  const test = async (x) => {
+    console.log(x);
+    await setDoc(doc(db, "charachters", "mario"), {
+      employment: "rithwik sad",
+      outfit: "red",
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Enter your verification code</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(value) => setCode(value)}
-      />
-      <Button title="submit" onPress={() => console.log(code)} />
+      <Text>Open up App.js to start rathik ? your apip!</Text>
       <StatusBar style="auto" />
+      <Button
+        onPress={() => test(8)}
+        title="Learn More"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
     </View>
   );
 }
@@ -23,12 +32,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#777",
-    padding: 8,
-    margin: 10,
-    width: 200,
   },
 });
