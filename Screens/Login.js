@@ -34,13 +34,13 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
+        navigation.replace("Home");
       })
       .catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage);
         alert("you are a fucking dumbass");
       });
-    navigation.replace("Home");
   };
 
   const handleSignUp = () => {

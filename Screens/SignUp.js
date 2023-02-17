@@ -1,4 +1,5 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useCallback } from "react";
+import { withRouter } from "react-router";
 import {
   StyleSheet,
   TextInput,
@@ -32,39 +33,6 @@ const SignUp = (props) => {
   const ageInputRef = createRef();
   const addressInputRef = createRef();
   const passwordInputRef = createRef();
-
-  //   const Verification = () => {
-  //     const [code, setCode] = useState("hello");
-  //     const alphanum = /^[a-z0-9]+$/i;
-  //     const updateCode = async (s) => {
-  //       console.log(s);
-  //       let t1 = alphanum.test(s);
-  //       let t2 = s.length == 8 ? true : false;
-  //       if (t1 && t2) {
-  //         const q = query(collection(db, "codes"), where("vcode", "==", code));
-  //         const querySnapshot = await getDocs(q);
-  //         if (querySnapshot.size == 1) {
-  //           console.log("Transaction exists.");
-  //           querySnapshot.forEach((doc) => {
-  //             deleteDoc(doc.ref);
-  //           });
-  //         } else {
-  //           console.log("Code does not exist.");
-  //         }
-  //       }
-  //     };
-  //     return (
-  //       <View style={styles.container}>
-  //         <Text>Enter your verification code</Text>
-  //         <TextInput
-  //           style={styles.input}
-  //           onChangeText={(value) => setCode(value)}
-  //         />
-  //         <Button title="submit" onPress={() => updateCode(code)} />
-  //         <StatusBar style="auto" />
-  //       </View>
-  //     );
-  //   };
 
   const handleSubmitButton = async () => {
     setErrortext("");
@@ -107,6 +75,22 @@ const SignUp = (props) => {
     });
     setIsRegistraionSuccess(true);
   };
+
+  const handleSignUp = useCallback(
+    async (event) => {
+      event.preventDefault();
+      // const { email, password } = event.target.elements;
+      try {
+        await app
+          .auth()
+          .createUserWithEmailAndPassword(email.value, password.value);
+        history.push("/");
+      } catch (error) {
+        alert(error);
+      }
+    },
+    [history]
+  );
   if (isRegistraionSuccess) {
     return (
       <View

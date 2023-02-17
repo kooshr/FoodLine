@@ -1,7 +1,13 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  Button,
+} from "react-native";
 import colors from "./colors.js";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/core";
 import { auth } from "../firebase.js";
@@ -19,6 +25,9 @@ const Home = () => {
         navigation.replace("Login");
       })
       .catch((error) => alert(error.message));
+  };
+  const goToPay = () => {
+    navigation.replace("Payment");
   };
 
   return (
@@ -42,6 +51,12 @@ const Home = () => {
             <Text style={styles.buttonText}>Sign out</Text>
           </TouchableOpacity>
         </View>
+        <Button
+          onPress={goToPay}
+          title="Payment Page"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
       </SafeAreaView>
       <SafeAreaView>
         <View>
