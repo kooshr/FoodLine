@@ -6,15 +6,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { Alert, Button, SafeAreaView, View } from "react-native";
 import { keys } from "../keys";
+import { auth } from "../firebase.js";
 
 const Payment = () => {
   const stripePublishableKey = keys.public;
   // console.log(stripePublishableKey);
   return (
     <StripeProvider publishableKey={stripePublishableKey}>
-      <SafeAreaView>
-        <StripeTest />
-      </SafeAreaView>
+      <StripeTest></StripeTest>
     </StripeProvider>
   );
 };
@@ -23,11 +22,25 @@ const StripeTest = () => {
   const { confirmPayment, initPaymentSheet, presentPaymentSheet } = useStripe();
 
   const [key, setKey] = useState("");
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // fetch("http://169.233.200.247:3000/create-payment-intent", {
+    //   method: "POST",
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     console.log("intent", res);
+    //     setKey(res.clientSecret);
+    //     initPaymentSheet({ paymentIntentClientSecret: key });
+    //   })
+    //   .catch((e) => {
+    //     Alert.alert(e.message);
+    //     console.log("fetch error");
+    //   });
+  }, []);
 
-  const handleSheet =  () => {
+  const handleSheet = async () => {
     console.log("came in here");
-       fetch("http://169.233.200.247:3000/create-payment-intent", {
+    await fetch("http://169.233.210.206:3000/create-payment-intent", {
       method: "POST",
     })
       .then((res) => res.json())
@@ -44,24 +57,6 @@ const StripeTest = () => {
       clientSecret: key,
     });
   };
-
-  const createCustomer = () => {};
-
-  // const handlePayment = async () => {
-    const { error } = await confirmPayment(key, {
-      paymentMethodType: "Card",
-      billingDetails: {
-        email: "hoe@doe.com",
-      },
-    });
-
-    if (error) {
-      console.log("payment error");
-      Alert.alert("Error", error.message);
-    } else {
-      Alert.alert("Payment succesfull");
-    }
-  // };
 
   return (
     <View>
@@ -88,7 +83,7 @@ const StripeTest = () => {
       />
       {/* <Button title="Pay" onPress={handlePayment} /> */}
       <Button title="Present sheet" onPress={handleSheet} />
-      <Button title="Create customer" onPress={createCustomer} />-
+      {/* <Button title="Create customer" onPress={createCustomer} />- */}
     </View>
   );
 };
