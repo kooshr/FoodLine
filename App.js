@@ -1,30 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Button, View, Text } from "react-native";
-import { setDoc, doc } from "firebase/firestore";
-import { db } from "/Users/rithwikvaidun/food-delivery/firebase.js";
+import React, { useEffect } from "react";
+import Home from "./Screens/Home";
+import Login from "./Screens/Login";
+import SignUp from "./Screens/SignUp";
+import Payment from "./Screens/Payment";
 
-export default function App() {
-  const test = async (x) => {
-    console.log(x);
-    await setDoc(doc(db, "charachters", "mario"), {
-      employment: "rithwik sad",
-      outfit: "red",
-    });
-  };
+import { AuthProvider } from "./Auth";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useState } from "react";
+import { StyleSheet, Text, Button, Alert } from "react-native";
+import { StripeProvider, usePaymentSheet } from "@stripe/stripe-react-native";
 
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start rathik ? your apip!</Text>
-      <StatusBar style="auto" />
-      <Button
-        onPress={() => test(8)}
-        title="Learn More"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-    </View>
+    <AuthProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {/* <Stack.Screen name="Home" component={Home} /> */}
+          {/* <Stack.Screen name="Login" component={Login} /> */}
+          {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
+          <Stack.Screen name="Payment" component={Payment} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -33,4 +35,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  body: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 40,
+    fontWeight: "bold",
+    margin: 10,
+  },
 });
+
+export default App;
