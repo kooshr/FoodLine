@@ -14,11 +14,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.FoodLine.Maps",
+      "config": {
+        "googleMapsApiKey": "AIzaSyD0qN0dKA98c-CcADVjl69SZJjxxL9qG74"
+      }
     },
     "android": {
       "adaptiveIcon": {
