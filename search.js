@@ -1,6 +1,5 @@
-import { Assets } from "@react-navigation/elements";
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, Text, View, Image, Pressable } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 
 
@@ -32,8 +31,6 @@ const styles = StyleSheet.create({
         height:50,
         margin:16,
         backgroundColor:"#FFFFFF",
-        shadowOpacity: .5,
-        shadowRadius: 3,
         padding:10,
         paddingLeft:50,
     },
