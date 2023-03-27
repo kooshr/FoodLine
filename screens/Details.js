@@ -1,13 +1,21 @@
 import React from "react";
+import Feather from 'react-native-vector-icons/Feather';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
-const Details = ({route}) => {
+const Details = ({route, navigation}) => {
     const {item} = route.params;
     return (
         <View style={styles.View}>
-            <Text style = {styles.Title}>
-                {item.title}
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <View style={styles.Back}>
+                        <Feather name="chevron-left" size = {24} color="black"/>
+                    </View>
+                </TouchableOpacity>
+                <Text style = {styles.Title}>
+                    {item.title}
+                </Text>
+            </View>
             <Image style={styles.Image} source={item.img} />
             <View style={{ display: 'flex', flexDirection: 'row',}}>
                 <View style = {styles.outer}>
@@ -39,13 +47,25 @@ const Details = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+    Back:{
+        height:100,
+        padding:1,
+        paddingTop:10,
+        paddingLeft:10,
+        borderRadius:10,
+        marginLeft: 8,
+        marginTop:10,
+    },
     View: {
         marginTop: 50,
         marginBottom: 50,
     },
     Title: {
+        marginTop:10,
+        width:345,
+        height:100,
         textAlign: "center",
-        fontSize: 40,
+        fontSize:40,
         fontWeight: "bold",
     },
     Image: {
