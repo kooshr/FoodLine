@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View, Image} from "react-native";
 
-export default function Item({name, quantity, price, img, onPress}){
+export default function Item({key, title, quantity, price, img, onPress}){
     return (
         <TouchableOpacity onPress={onPress}>
             <View style = {styles.Background}>
@@ -9,7 +9,7 @@ export default function Item({name, quantity, price, img, onPress}){
                     <View style = {styles.Plus1}/>
                     <View style = {styles.Plus2}/>
                 </View>
-                <Text style = {styles.ItemName}>{name}</Text>
+                <Text style={styles.ItemName}>{title}</Text>
                 <Text style = {styles.Quantity}>Quantity:{quantity}</Text>
                 <Text style = {styles.Price}>${price} per item</Text>
                 <Image style = {styles.Image} source={img}/>

@@ -19,7 +19,7 @@ export default function SearchBar({}) {
                 style = {styles.Search}
                 onPress={() => setText("")}
             >
-                <Image style = {styles.SearchIcon} source={require("./assets/searchicon.png")}/>
+                <Image style = {styles.SearchIcon} source={require("../assets/searchicon.png")}/>
             </TouchableOpacity>
         </View>
     )

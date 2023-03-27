@@ -7,25 +7,25 @@ const Navbar = () => {
             <TouchableOpacity style={styles.home}>
                 <Image
                     style={styles.homeIcon}
-                    source={require("./assets/home.png")}
+                    source={require("../assets/home.png")}
                 />
             </TouchableOpacity>
             <TouchableOpacity style={styles.home}>
                 <Image
                     style={styles.homeIcon}
-                    source={require("./assets/home.png")}
+                    source={require("../assets/home.png")}
                 />
             </TouchableOpacity>
             <TouchableOpacity style={styles.home}>
                 <Image
                     style={styles.homeIcon}
-                    source={require("./assets/home.png")}
+                    source={require("../assets/home.png")}
                 />
             </TouchableOpacity>
             <TouchableOpacity style={styles.home}>
                 <Image
                     style={styles.homeIcon}
-                    source={require("./assets/home.png")}
+                    source={require("../assets/home.png")}
                 />
             </TouchableOpacity>
         </View>
