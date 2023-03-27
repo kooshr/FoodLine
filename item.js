@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
         fontSize: 24,
         marginLeft:16,
         marginTop:16,
+        width:200,
+        height:70,
     },
     Quantity:{
         color: '#888888',
