@@ -27,7 +27,7 @@ const Home = ({navigation}) => {
                         )
                     }
                 </ScrollView>
-                <Navbar />
+                <Navbar navigation={navigation}/>
             </View>
         </View>
 

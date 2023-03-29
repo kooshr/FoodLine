@@ -1,19 +1,25 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-const Navbar = () => {
+const Navbar = ({navigation}) => {
     return (
         <View style={styles.navbar}>
-            <TouchableOpacity style={styles.home}>
+            <TouchableOpacity 
+                style={styles.home}
+                onPress={() => navigation.navigate('Home')}
+                >
                 <Image
                     style={styles.homeIcon}
                     source={require("../assets/home.png")}
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.home}>
+            <TouchableOpacity 
+                style={styles.home}
+                onPress={() => navigation.navigate('Search')}
+                >
                 <Image
-                    style={styles.homeIcon}
-                    source={require("../assets/home.png")}
+                    style={styles.buyIcon}
+                    source={require("../assets/buy.png")}
                 />
             </TouchableOpacity>
             <TouchableOpacity style={styles.home}>
@@ -54,6 +60,10 @@ const styles = StyleSheet.create({
     homeIcon: {
         height: 40,
         width: 40,
+    },
+    buyIcon: {
+        height: 40,
+        width: 46,
     },
 });
 
