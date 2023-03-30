@@ -6,7 +6,7 @@ import Navbar from "../components/navbar.js";
 import itemData from "../data/itemData.js";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 
-
+//Images not rendering (Firebase Limit Reached)
 const Home = ({ navigation }) => {
 
     const renderItem = ({ item }) => (
