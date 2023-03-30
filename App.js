@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, TransitionSpecs } from "@react-navigation/stack";
 import Home from "./screens/Home.js";
 import Details from "./screens/Details.js";
 import Search from "./screens/Search.js";
