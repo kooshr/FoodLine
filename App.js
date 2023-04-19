@@ -10,7 +10,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
 import { StyleSheet, Text, Button, Alert } from "react-native";
 import { StripeProvider, usePaymentSheet } from "@stripe/stripe-react-native";
-import AddProduct from "./Screens/AddProduct";
 
 const Stack = createStackNavigator();
 
@@ -23,7 +22,6 @@ const App = () => {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Payment" component={Payment} />
-          <Stack.Screen name="AddProduct" component={AddProduct} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
