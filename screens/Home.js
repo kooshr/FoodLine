@@ -31,10 +31,6 @@ const Home = ({ navigation }) => {
                     data={itemData}
                     renderItem={renderItem}
                     keyExtractor={item => item.key}
-                    onScroll={useAnimatedScrollHandler((event) => {
-                        console.log(event.contentOffset.y)
-                    })}
-                    scrollEventThrottle={16}
                 />
                 <Navbar navigation={navigation} />
             </View>

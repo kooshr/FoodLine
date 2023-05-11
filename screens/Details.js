@@ -1,6 +1,7 @@
 import React from "react";
-import Feather from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { color } from "react-native-reanimated";
 
 const Details = ({route, navigation}) => {
     const {item} = route.params;
@@ -9,7 +10,8 @@ const Details = ({route, navigation}) => {
             <View style={{ display: 'flex', flexDirection: 'row', }}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <View style={styles.Back}>
-                        <Feather name="chevron-left" size = {24} color="black"/>
+                        <View style={{width:15, backgroundColor:"black",transform: [{rotate: '-45deg'}], height:2}}/>
+                        <View style={{width:15, backgroundColor:"black",transform: [{rotate: '45deg'}], height:2, top:8}}/>
                     </View>
                 </TouchableOpacity>
                 <Text style = {styles.Title}>
