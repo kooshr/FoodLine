@@ -60,9 +60,6 @@ const Sell = ({ navigation }) => {
                 </View>
             </View>
             <View style = {styles.Imageouter}>
-                    <Text style={styles.subheading}>
-                        Insert Image:
-                    </Text>
                     <TouchableOpacity style = {styles.AddImage}>
                         <Text style = {styles.AddImageText}>Add Image!</Text>
                     </TouchableOpacity>
@@ -139,7 +136,7 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
     },
     AddImage:{
-        marginTop:70,
+        marginTop: 20,
         alignSelf:"center",
         width: 150,
         height: 45,
