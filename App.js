@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Home from "./Screens/Home";
+import Sell from "./Screens/Sell";
 import Login from "./Screens/Login";
 import SignUp from "./Screens/SignUp";
 import Payment from "./Screens/Payment";
@@ -18,10 +19,11 @@ const App = () => {
     <AuthProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Payment" component={Payment} />
+          {/* <Stack.Screen name="Home" component={Home} options={{headerShown:false,}}/> */}
+          <Stack.Screen name="Sell" component={Sell} options={{headerShown:false,}} />
+          {/* <Stack.Screen name="Login" component={Login} options={{headerShown:false,}}/>
+          <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false,}}/>
+          <Stack.Screen name="Payment" component={Payment} options={{headerShown:false,}}/> */}
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

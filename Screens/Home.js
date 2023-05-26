@@ -78,16 +78,56 @@
 //   },
 // });
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import Item from '../components/item.js';
 import SearchBar from "../components/search.js";
 import Navbar from "../components/navbar.js";
-import itemData from "../data/itemData.js";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
+import { db } from "../firebase";
+import {
+    collection,
+    getDocs,
+    onSnapshot,
+    query,
+    QuerySnapshot,
+  } from "firebase/firestore";
 
 //Images not rendering (Firebase Limit Reached)
 const Home = ({ navigation }) => {
+    const [products, setProducts] = useState(null);
+
+    const fetchProducts = async () => {
+        const q = query(collection(db, "products"));
+        // getDocs(q).then((querySnapshot) => {
+        //   const prods = [];
+        //   console.log("start");
+        //   querySnapshot.forEach((doc) => {
+        //     console.log("middle");
+        //     prods.push(doc.data());
+        //   });
+        //   console.log(prods);
+        //   setProducts(prods);
+        // });
+        
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let prods = [];
+            querySnapshot.forEach((doc) => {
+                prods.push(doc.data());
+                console.log(doc.data())
+            });
+            setProducts(prods)
+        });
+    };
+
+    useEffect(() => {
+        const getProducts = () => {
+          console.log("called");
+          setProducts(fetchProducts());
+          //console.log(prods);
+        };
+        getProducts();
+    }, []);
 
     const renderItem = ({ item }) => (
             <Item
@@ -108,7 +148,7 @@ const Home = ({ navigation }) => {
                 <Text style={{ margin: 16, marginTop: 0, fontSize: 16, fontWeight: "bold", }}>Recently Posted Items</Text>
                 <Animated.FlatList
                     style={{ height: 490 }}
-                    data={itemData}
+                    data={products}
                     renderItem={renderItem}
                     keyExtractor={item => item.key}
                     onScroll={useAnimatedScrollHandler((event) => {
