@@ -7,8 +7,27 @@ import itemData from "../data/itemData.js";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
+import { db } from "../firebase";
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    listAll,
+    list,
+    uploadBytesResumable,
+  } from "firebase/storage";
+import uuid from "react-native-uuid";
+import { addDoc, collection } from "firebase/firestore";
 
 const Sell = ({ navigation }) => {
+    /*states for keeping track of inputted item info*/
+    const [pImage, setpImage] = useState(null);
+    const [iName, setiName] = useState(null);
+    const [iPrice, setiPrice] = useState(null);
+    const [quantity, setQuantity] = useState(null);
+
+    //handles image picker stuff for picking a photo
     const handleChoosePhoto = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -21,17 +40,46 @@ const Sell = ({ navigation }) => {
           setpImage(result.assets[0].uri);
         }
     };
-    const renderItem = ({ item }) => (
-        <Item
-            key={item.key}
-            title={item.title}
-            quantity={item.quantity}
-            price={item.price}
-            img={item.img}
-            onPress={() => navigation.navigate('Details', { item: item })}
-        />
-    );
-    const [pImage, setpImage] = useState(null);
+
+    //submitListing uploads the form to firebase
+    const submitListing = async () => {
+        if (pImage && iName && iPrice && quantity) {
+          let c = Math.random().toString(36).slice(2);
+          let response = await fetch(pImage);
+          let blob = await response.blob();
+          console.log("Blob created");
+          const fileRef = ref(getStorage(), uuid.v4());
+          console.log("File reference created");
+    
+          uploadBytesResumable(fileRef, blob).then((snapshot) => {
+            console.log("uploaded a blob or file");
+            getDownloadURL(snapshot.ref).then((downloadURL) => {
+              addDoc(collection(db, "products"), {
+                name: iName,
+                price: iPrice,
+                productImage: pImage,
+                transID: c,
+              }).then((docRef) => {
+                console.log("Doc has been added successfully");
+              });
+            });
+          });
+        } else {
+          console.log("Error: please try again!");
+        }
+    };
+
+    // const renderItem = ({ item }) => (
+    //     <Item
+    //         key={item.key}
+    //         title={item.title}
+    //         quantity={item.quantity}
+    //         price={item.price}
+    //         img={item.img}
+    //         onPress={() => navigation.navigate('Details', { item: item })}
+    //     />
+    // );
+    
     return (
         <View style={{ backgroundColor: "#F9F9FB" }}>
             <View style={styles.View}>
@@ -44,6 +92,7 @@ const Sell = ({ navigation }) => {
                         <TextInput
                             placeholder="ie. $1.25"
                             style={styles.text}
+                            onChangeText={(value) => setiName(value)}
                         />
                     </View>
                 </View>
@@ -56,6 +105,7 @@ const Sell = ({ navigation }) => {
                         <TextInput
                             placeholder="ie. $1.25"
                             style={styles.text}
+                            onChangeText={(value) => setiPrice(value)}
                         />
                     </View>
                 </View>
@@ -67,6 +117,7 @@ const Sell = ({ navigation }) => {
                         <TextInput
                             placeholder="ie. 5"
                             style={styles.text}
+                            onChangeText={(value) => setQuantity(value)}
                         />
                     </View>
                 </View>
@@ -79,7 +130,7 @@ const Sell = ({ navigation }) => {
                     <Image source={{ uri: pImage }} style={styles.Image} />
                     )}
             </View>
-            <TouchableOpacity style = {styles.Checkout}>
+            <TouchableOpacity style = {styles.Checkout} onPress={submitListing}>
                 <Text style = {styles.checkoutText}>Post Product!</Text>
             </TouchableOpacity>
             <Navbar navigation={navigation} />
