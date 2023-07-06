@@ -22,10 +22,13 @@ const Navbar = ({navigation}) => {
                     source={require("../assets/buy.png")}
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.home}>
+            <TouchableOpacity 
+                style={styles.home}
+                onPress={() => navigation.navigate('Sell')}
+                >
                 <Image
                     style={styles.homeIcon}
-                    source={require("../assets/home.png")}
+                    source={require("../assets/sell.png")}
                 />
             </TouchableOpacity>
             <TouchableOpacity style={styles.home}>

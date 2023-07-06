@@ -57,10 +57,12 @@ const Sell = ({ navigation }) => {
               addDoc(collection(db, "products"), {
                 name: iName,
                 price: iPrice,
-                productImage: pImage,
-                transID: c,
+                productImage: downloadURL,
+                quantity:quantity,
+                key: c, //Used to be TransID
               }).then((docRef) => {
                 console.log("Doc has been added successfully");
+                  console.log(downloadURL)
               });
             });
           });
@@ -196,6 +198,8 @@ const styles = StyleSheet.create({
     },
     Checkout:{
         margin: 12,
+        marginBottom:-10,
+        marginTop:-5,
         width: 364,
         height: 95,
         backgroundColor: "#F26C68",

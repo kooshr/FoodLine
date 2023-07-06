@@ -152,7 +152,7 @@ const Home = ({ navigation }) => {
                     renderItem={renderItem}
                     keyExtractor={item => item.key}
                     onScroll={useAnimatedScrollHandler((event) => {
-                        console.log(event.contentOffset.y)
+                        //console.log(event.contentOffset.y)
                     })}
                     scrollEventThrottle={16}
                 />
