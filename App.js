@@ -6,6 +6,7 @@ import SignUp from "./Screens/SignUp";
 import Payment from "./Screens/Payment";
 import Search from "./Screens/Search"
 import Details from "./Screens/Details";
+import Profile from "./Screens/Profile"
 
 import { AuthProvider } from "./Auth";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
@@ -28,6 +29,7 @@ const App = () => {
             <Stack.Screen name="Login" component={Login} options={{headerShown:false,}}/>
             <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false,}}/>
             <Stack.Screen name="Payment" component={Payment} options={{headerShown:false,}}/>
+            <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false, }} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
