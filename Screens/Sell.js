@@ -1,9 +1,6 @@
 import React, {useState} from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
-import Item from '../components/item.js';
-import SearchBar from "../components/search.js";
 import Navbar from "../components/navbar.js";
-import itemData from "../data/itemData.js";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
@@ -55,7 +52,7 @@ const Sell = ({ navigation }) => {
             console.log("uploaded a blob or file");
             getDownloadURL(snapshot.ref).then((downloadURL) => {
               addDoc(collection(db, "products"), {
-                name: iName,
+                title: iName,
                 price: iPrice,
                 productImage: downloadURL,
                 quantity:quantity,

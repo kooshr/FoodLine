@@ -129,13 +129,13 @@ const Home = ({ navigation }) => {
         getProducts();
     }, []);
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item}) => (
             <Item
                 key={item.key}
                 title={item.title}
                 quantity={item.quantity}
                 price={item.price}
-                img={item.img}
+                img={{uri:item.productImage}}
                 onPress={() => navigation.navigate('Details', { item: item })}
             />
     );
