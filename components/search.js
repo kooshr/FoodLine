@@ -3,27 +3,38 @@ import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 
 
-export default function SearchBar({}) {
+export default function SearchBar({ onSearch }) {
     const [text, setText] = useState('');
-    //Add this for testing: <Text style = {{margin:10,}}>{text}</Text>
+
+    const handleSearch = () => {
+        onSearch(text);
+    };
+
+    const handleKeyPress = ({ nativeEvent }) => {
+        if (nativeEvent.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     return (
         <View>
             <TextInput
                 placeholder="Search"
-                style = {styles.SearchBar}
+                style={styles.SearchBar}
                 value={text}
-                onChangeText={(val) => setText(val)}
+                onChangeText={setText}
                 clearButtonMode="always"
+                onSubmitEditing={handleSearch}
+                onKeyPress={handleKeyPress}
             />
-            <TouchableOpacity 
-                style = {styles.Search}
-                onPress={() => setText("")}
-            >
-                <Image style = {styles.SearchIcon} source={require("../assets/searchicon.png")}/>
+            <TouchableOpacity style={styles.Search} onPress={handleSearch}>
+                <Image style={styles.SearchIcon} source={require("../assets/searchicon.png")} />
             </TouchableOpacity>
         </View>
-    )
+    );
 }
+
+
 
 const styles = StyleSheet.create({
     SearchBar:{

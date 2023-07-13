@@ -14,39 +14,38 @@ import {
 
 
 const Search = ({ navigation }) => {
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
     const fetchProducts = async () => {
-        const q = query(collection(db, "products"));
-        // getDocs(q).then((querySnapshot) => {
-        //   const prods = [];
-        //   console.log("start");
-        //   querySnapshot.forEach((doc) => {
-        //     console.log("middle");
-        //     prods.push(doc.data());
-        //   });
-        //   console.log(prods);
-        //   setProducts(prods);
-        // });
-
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            let prods = [];
-            querySnapshot.forEach((doc) => {
-                prods.push(doc.data());
-                console.log(doc.data())
-            });
-            setProducts(prods)
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const prods = [];
+        querySnapshot.forEach((doc) => {
+            prods.push(doc.data());
         });
+        setProducts(prods);
+        setFilteredProducts(prods);
     };
 
     useEffect(() => {
-        const getProducts = () => {
-            console.log("called");
-            setProducts(fetchProducts());
-            //console.log(prods);
-        };
-        getProducts();
+        const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+            const prods = [];
+            snapshot.forEach((doc) => {
+                prods.push(doc.data());
+            });
+            setProducts(prods);
+            setFilteredProducts(prods);
+        });
+
+        return () => unsubscribe();
     }, []);
+
+    const handleSearch = (text) => {
+        const filtered = products.filter((product) => {
+            return product.title.toLowerCase().includes(text.toLowerCase());
+        });
+        setFilteredProducts(filtered);
+    };
 
     const renderItem = ({ item }) => (
         <Item
@@ -62,20 +61,20 @@ const Search = ({ navigation }) => {
     return (
         <View style={{ backgroundColor: "#F9F9FB" }}>
             <View style={styles.View}>
-                <SearchBar />
-                <Text style={{ margin: 16, marginTop: 0, fontSize: 32, fontWeight: "bold", }}>Results</Text>
+                <SearchBar onSearch={handleSearch} />
+                <Text style={{ margin: 16, marginTop: 0, fontSize: 32, fontWeight: "bold" }}>Results</Text>
                 <FlatList
-                    style={{ height: 540 }}
-                    data={products}
+                    style={{ height: 560 }}
+                    data={filteredProducts}
                     renderItem={renderItem}
                     keyExtractor={item => item.key}
                 />
                 <Navbar navigation={navigation} />
             </View>
         </View>
-
     );
 };
+
 
 const styles = StyleSheet.create({
     View: {
