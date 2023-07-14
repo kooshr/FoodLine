@@ -1,45 +1,23 @@
-import { useNavigation } from "@react-navigation/core";
-import React, { useEffect, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase.js";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       navigation.replace("Login");
-  //     }
-  //   });
-
-  //   return unsubscribe;
-  // }, []);
-
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential.user);
+      .then(() => {
+        console.log("User logged in successfully");
         navigation.replace("Home");
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        alert("you are a fucking dumbass");
+        console.log("Login error: ", error);
+        alert("Login failed. Please try again.");
       });
   };
 
@@ -69,18 +47,13 @@ const Login = () => {
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
-        >
+        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
           <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
-
-export default Login;
 
 const styles = StyleSheet.create({
   container: {
@@ -128,3 +101,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default Login;

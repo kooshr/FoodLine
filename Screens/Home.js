@@ -12,6 +12,7 @@ import {
     onSnapshot,
     query,
     QuerySnapshot,
+    orderBy,
   } from "firebase/firestore";
 
 //Images not rendering (Firebase Limit Reached)
@@ -19,18 +20,8 @@ const Home = ({ navigation }) => {
     const [products, setProducts] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(null);
 
-    const fetchProducts = async () => {
-        const querySnapshot = await getDocs(collection(db, "products"));
-        const prods = [];
-        querySnapshot.forEach((doc) => {
-            prods.push(doc.data());
-        });
-        setProducts(prods);
-        setFilteredProducts(prods);
-    };
-
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+        const unsubscribe = onSnapshot(query(collection(db, "products"), orderBy("timestamp", "desc")), (snapshot) => {
             const prods = [];
             snapshot.forEach((doc) => {
                 prods.push(doc.data());

@@ -10,6 +10,7 @@ import {
     onSnapshot,
     query,
     QuerySnapshot,
+    orderBy,
 } from "firebase/firestore";
 
 
@@ -17,18 +18,8 @@ const Search = ({ navigation }) => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
 
-    const fetchProducts = async () => {
-        const querySnapshot = await getDocs(collection(db, "products"));
-        const prods = [];
-        querySnapshot.forEach((doc) => {
-            prods.push(doc.data());
-        });
-        setProducts(prods);
-        setFilteredProducts(prods);
-    };
-
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+        const unsubscribe = onSnapshot(query(collection(db, "products"), orderBy("title", "asc")), (snapshot) => {
             const prods = [];
             snapshot.forEach((doc) => {
                 prods.push(doc.data());

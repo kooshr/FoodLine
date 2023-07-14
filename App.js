@@ -1,4 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { AuthProvider } from "./Auth";
+
 import Home from "./Screens/Home";
 import Sell from "./Screens/Sell";
 import Login from "./Screens/Login";
@@ -8,12 +12,7 @@ import Search from "./Screens/Search"
 import Details from "./Screens/Details";
 import Profile from "./Screens/Profile"
 
-import { AuthProvider } from "./Auth";
-import { NavigationContainer, StackActions } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { useState } from "react";
-import { StyleSheet, Text, Button, Alert } from "react-native";
-import { StripeProvider, usePaymentSheet } from "@stripe/stripe-react-native";
+import { StyleSheet } from "react-native";
 
 const Stack = createStackNavigator();
 

@@ -41,44 +41,42 @@ const Sell = ({ navigation }) => {
     //submitListing uploads the form to firebase
     const submitListing = async () => {
         if (pImage && iName && iPrice && quantity) {
-          let c = Math.random().toString(36).slice(2);
-          let response = await fetch(pImage);
-          let blob = await response.blob();
-          console.log("Blob created");
-          const fileRef = ref(getStorage(), uuid.v4());
-          console.log("File reference created");
-    
-          uploadBytesResumable(fileRef, blob).then((snapshot) => {
-            console.log("uploaded a blob or file");
-            getDownloadURL(snapshot.ref).then((downloadURL) => {
-              addDoc(collection(db, "products"), {
-                title: iName,
-                price: iPrice,
-                productImage: downloadURL,
-                quantity:quantity,
-                key: c, //Used to be TransID
-              }).then((docRef) => {
-                console.log("Doc has been added successfully");
-                  console.log(downloadURL)
-              });
+            let c = Math.random().toString(36).slice(2);
+            let response = await fetch(pImage);
+            let blob = await response.blob();
+            console.log("Blob created");
+            const fileRef = ref(getStorage(), uuid.v4());
+            console.log("File reference created");
+
+            const timestamp = new Date().getTime();
+
+            uploadBytesResumable(fileRef, blob).then((snapshot) => {
+                console.log("uploaded a blob or file");
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    addDoc(collection(db, "products"), {
+                        title: iName,
+                        price: iPrice,
+                        productImage: downloadURL,
+                        quantity: quantity,
+                        key: c,
+                        timestamp: timestamp,
+                    }).then((docRef) => {
+                        console.log("Doc has been added successfully");
+                        console.log(downloadURL)
+
+                        // Clear fields
+                        setpImage(null);
+                        setiName(null);
+                        setiPrice(null);
+                        setQuantity(null);
+                    });
+                });
             });
-          });
         } else {
-          console.log("Error: please try again!");
+            console.log("Error: please try again!");
         }
     };
 
-    // const renderItem = ({ item }) => (
-    //     <Item
-    //         key={item.key}
-    //         title={item.title}
-    //         quantity={item.quantity}
-    //         price={item.price}
-    //         img={item.img}
-    //         onPress={() => navigation.navigate('Details', { item: item })}
-    //     />
-    // );
-    
     return (
         <View style={{ backgroundColor: "#F9F9FB" }}>
             <View style={styles.View}>

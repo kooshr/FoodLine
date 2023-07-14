@@ -42,11 +42,10 @@ const Profile = ({ navigation }) => {
             // Save profileData to Firebase database
             await addDoc(collection(db, "profiles"), profileData);
 
-            // Reset input fields
-            setFirstName("");
-            setLastName("");
-            setPhoneNumber("");
-            setEmail("");
+            setFirstName(firstName);
+            setLastName(lastName);
+            setPhoneNumber(phoneNumber);
+            setEmail(email);
 
             console.log("Profile saved successfully!");
         } catch (error) {

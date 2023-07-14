@@ -1,61 +1,57 @@
-import {
-  CardField,
-  StripeProvider,
-  useStripe,
-} from "@stripe/stripe-react-native";
 import React, { useEffect, useState } from "react";
-import { Alert, Button, SafeAreaView, View } from "react-native";
+import { Alert, Button, View } from "react-native";
+import { CardField, StripeProvider, useStripe } from "@stripe/stripe-react-native";
 import { keys } from "../keys";
-import { auth } from "../firebase.js";
 
 const Payment = () => {
   const stripePublishableKey = keys.public;
-  // console.log(stripePublishableKey);
+
   return (
     <StripeProvider publishableKey={stripePublishableKey}>
-      <StripeTest></StripeTest>
+      <StripeTest />
     </StripeProvider>
   );
 };
 
 const StripeTest = () => {
   const { confirmPayment, initPaymentSheet, presentPaymentSheet } = useStripe();
+  const [clientSecret, setClientSecret] = useState("");
 
-  const [key, setKey] = useState("");
   useEffect(() => {
-    // fetch("http://169.233.200.247:3000/create-payment-intent", {
-    //   method: "POST",
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     console.log("intent", res);
-    //     setKey(res.clientSecret);
-    //     initPaymentSheet({ paymentIntentClientSecret: key });
-    //   })
-    //   .catch((e) => {
-    //     Alert.alert(e.message);
-    //     console.log("fetch error");
-    //   });
+    const fetchPaymentIntent = async () => {
+      try {
+        const response = await fetch("http://your-api-endpoint.com/create-payment-intent", {
+          method: "POST",
+        });
+        const data = await response.json();
+        setClientSecret(data.clientSecret);
+        initPaymentSheet({ paymentIntentClientSecret: data.clientSecret });
+      } catch (error) {
+        console.error("Error fetching payment intent: ", error);
+      }
+    };
+
+    fetchPaymentIntent();
   }, []);
 
-  const handleSheet = async () => {
-    console.log("came in here");
-    await fetch("http://169.233.210.206:3000/create-payment-intent", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("intent", res);
-        setKey(res.clientSecret);
-        initPaymentSheet({ paymentIntentClientSecret: key });
-      })
-      .catch((e) => {
-        Alert.alert(e.message);
-        console.log("fetch error");
+  const handlePayment = async () => {
+    try {
+      const { error } = await confirmPayment(clientSecret, {
+        type: "Card",
+        billingDetails: {
+          email: "test@example.com",
+        },
       });
-    presentPaymentSheet({
-      clientSecret: key,
-    });
+
+      if (error) {
+        Alert.alert("Payment failed. Please try again.");
+      } else {
+        Alert.alert("Payment successful!");
+      }
+    } catch (error) {
+      console.error("Error during payment: ", error);
+      Alert.alert("Payment failed. Please try again.");
+    }
   };
 
   return (
@@ -74,16 +70,9 @@ const StripeTest = () => {
           height: 50,
           marginVertical: 30,
         }}
-        // onCardChange={(cardDetails) => {
-        //   console.log("cardDetails", cardDetails);
-        // }}
-        // onFocus={(focusedField) => {
-        //   console.log("focusField", focusedField);
-        // }}
       />
-      {/* <Button title="Pay" onPress={handlePayment} /> */}
-      <Button title="Present sheet" onPress={handleSheet} />
-      {/* <Button title="Create customer" onPress={createCustomer} />- */}
+      <Button title="Pay" onPress={handlePayment} />
+      <Button title="Present sheet" onPress={() => presentPaymentSheet()} />
     </View>
   );
 };
