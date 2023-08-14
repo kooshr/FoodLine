@@ -40,7 +40,7 @@ const StripeTest = () => {
 
   const handleSheet = async () => {
     console.log("came in here");
-    await fetch("http://169.233.210.206:3000/create-payment-intent", {
+    await fetch("http://192.168.1.26:3000/create-payment-intent", {
       method: "POST",
     })
       .then((res) => res.json())

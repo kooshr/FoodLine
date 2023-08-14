@@ -21,4 +21,21 @@ app.post("/create-payment-intent", async (req, res) => {
   });
 });
 
+app.post("/create-customer", async (req, res) => {
+  try {
+    const { email, name, metadata } = req.body;
+
+    const customer = await stripe.customers.create({
+      email,
+      name,
+      metadata,
+    });
+
+    res.json({ customer });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+
 app.listen(3000, () => console.log("Server up"));
