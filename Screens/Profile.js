@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import Navbar from "../components/navbar";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, where, updateDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import { Dimensions } from 'react-native';
 
@@ -10,25 +10,26 @@ const Profile = ({ navigation }) => {
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [email, setEmail] = useState("");
+    const [id, setID] = useState("");
+
+    const fetchProfileData = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, "profiles"), where("email", "==", email));
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                setFirstName(data.firstName || "");
+                setLastName(data.lastName || "");
+                setPhoneNumber(data.phoneNumber || "");
+                setID(data.id || "");
+            });
+        } catch (error) {
+            console.error("Error fetching profile data: ", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchProfileData = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "profiles"));
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    setFirstName(data.firstName || "");
-                    setLastName(data.lastName || "");
-                    setPhoneNumber(data.phoneNumber || "");
-                    setEmail(data.email || "");
-                });
-            } catch (error) {
-                console.error("Error fetching profile data: ", error);
-            }
-        };
-
         fetchProfileData();
-    }, []);
+    }, [email]);
 
     const handleSaveProfile = async () => {
         try {
@@ -36,21 +37,30 @@ const Profile = ({ navigation }) => {
                 firstName,
                 lastName,
                 phoneNumber,
-                email
+                email,
             };
 
-            // Save profileData to Firebase database
-            await addDoc(collection(db, "profiles"), profileData);
+            const querySnapshot = await getDocs(collection(db, "profiles"), where("email", "==", email));
+            const profileDocs = querySnapshot.docs;
 
-            setFirstName(firstName);
-            setLastName(lastName);
-            setPhoneNumber(phoneNumber);
-            setEmail(email);
-
-            console.log("Profile saved successfully!");
+            if (profileDocs.length === 0) {
+                // Profile not found, create a new one
+                const newProfileRef = await addDoc(collection(db, "profiles"), profileData);
+                await updateDoc(newProfileRef, { id: newProfileRef.id }); // Set the id field
+                console.log("New profile created successfully!");
+            } else {
+                // Update the existing profile data
+                await Promise.all(profileDocs.map(doc => updateDoc(doc.ref, profileData)));
+                console.log("Profile updated successfully!");
+            }
         } catch (error) {
-            console.error("Error saving profile: ", error);
+            console.error("Error updating profile: ", error);
         }
+        console.log(id)
+    };
+
+    const handleNavigateToSell = () => {
+        navigation.navigate("Sell", { userId: id }); // Pass the user's ID as a parameter
     };
 
     return (
@@ -103,7 +113,7 @@ const Profile = ({ navigation }) => {
                         onChangeText={(value) => setEmail(value)}
                     />
                 </View>
-
+                
                 <TouchableOpacity style={styles.bottom} onPress={handleSaveProfile}>
                     <Text style={styles.saveButton}>Save</Text>
                 </TouchableOpacity>

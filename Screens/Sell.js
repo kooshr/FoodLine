@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import Navbar from "../components/navbar.js";
 import { TextInput } from "react-native-gesture-handler";
@@ -13,7 +13,7 @@ import {
     listAll,
     list,
     uploadBytesResumable,
-  } from "firebase/storage";
+} from "firebase/storage";
 import uuid from "react-native-uuid";
 import { addDoc, collection } from "firebase/firestore";
 
@@ -27,14 +27,17 @@ const Sell = ({ navigation }) => {
     //handles image picker stuff for picking a photo
     const handleChoosePhoto = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            mediaType: "photo",
+            cropping: true,
+            cropperCircleOverlay: false,
+            compressImageQuality: 0.8,
         });
-    
+
         if (!result.canceled) {
-          setpImage(result.assets[0].uri);
+            setpImage(result.assets[0].uri);
         }
     };
 
@@ -80,8 +83,8 @@ const Sell = ({ navigation }) => {
     return (
         <View style={{ backgroundColor: "#F9F9FB" }}>
             <View style={styles.View}>
-                <Text style={{ margin: 16,textAlign:"center", marginTop: 10, fontSize: 32, fontWeight: "bold", }}>Sell Items!</Text>
-                <View style = {styles.nameouter}>
+                <Text style={{ margin: 16, textAlign: "center", marginTop: 10, fontSize: 32, fontWeight: "bold", }}>Sell Items!</Text>
+                <View style={styles.nameouter}>
                     <Text style={styles.subheading}>
                         Item Name:
                     </Text>
@@ -93,46 +96,46 @@ const Sell = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <View style={{ display: 'flex', flexDirection: 'row',}}>
-                <View style = {styles.outer}>
-                    <Text style={styles.subheading}>
-                        Price per Item:
-                    </Text>
-                    <View style={styles.inner}>
-                        <TextInput
-                            placeholder="ie. $1.25"
-                            style={styles.text}
-                            onChangeText={(value) => setiPrice(value)}
-                        />
+                <View style={{ display: 'flex', flexDirection: 'row', }}>
+                    <View style={styles.outer}>
+                        <Text style={styles.subheading}>
+                            Price per Item:
+                        </Text>
+                        <View style={styles.inner}>
+                            <TextInput
+                                placeholder="ie. $1.25"
+                                style={styles.text}
+                                onChangeText={(value) => setiPrice(value)}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.outer}>
+                        <Text style={styles.subheading}>
+                            Quantity:
+                        </Text>
+                        <View style={styles.inner}>
+                            <TextInput
+                                placeholder="ie. 5"
+                                style={styles.text}
+                                onChangeText={(value) => setQuantity(value)}
+                            />
+                        </View>
                     </View>
                 </View>
-                <View style={styles.outer}>
-                    <Text style={styles.subheading}>
-                        Quantity:
-                    </Text>
-                    <View style={styles.inner}>
-                        <TextInput
-                            placeholder="ie. 5"
-                            style={styles.text}
-                            onChangeText={(value) => setQuantity(value)}
-                        />
-                    </View>
-                </View>
-            </View>
-            <View style = {styles.Imageouter}>
-                    <TouchableOpacity style = {styles.AddImage} onPress={handleChoosePhoto}>
-                        <Text style = {styles.AddImageText}>Add Image!</Text>
+                <View style={styles.Imageouter}>
+                    <TouchableOpacity style={styles.AddImage} onPress={handleChoosePhoto}>
+                        <Text style={styles.AddImageText}>Add Image!</Text>
                     </TouchableOpacity>
                     {pImage && (
-                    <Image source={{ uri: pImage }} style={styles.Image} />
+                        <Image source={{ uri: pImage }} style={styles.Image} />
                     )}
+                </View>
+                <TouchableOpacity style={styles.Checkout} onPress={submitListing}>
+                    <Text style={styles.checkoutText}>Post Product!</Text>
+                </TouchableOpacity>
+                <Navbar navigation={navigation} />
             </View>
-            <TouchableOpacity style = {styles.Checkout} onPress={submitListing}>
-                <Text style = {styles.checkoutText}>Post Product!</Text>
-            </TouchableOpacity>
-            <Navbar navigation={navigation} />
         </View>
-    </View>
 
     );
 };
@@ -143,79 +146,79 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         backgroundColor: "#F9F9FB",
     },
-    nameouter:{
-        margin:12,
-        width:364,
-        height:95,
-        backgroundColor:"#FFFFFF",
-        borderRadius:20,
+    nameouter: {
+        margin: 12,
+        width: 364,
+        height: 95,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
     },
-    outer:{
-        margin:12,
-        width:170,
-        height:95,
-        backgroundColor:"#FFFFFF",
-        borderRadius:20,
+    outer: {
+        margin: 12,
+        width: 170,
+        height: 95,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
     },
-    subheading:{
-        marginTop:12,
+    subheading: {
+        marginTop: 12,
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
     },
     inner: {
         margin: 8,
-        marginTop:14,
+        marginTop: 14,
         height: 40,
         backgroundColor: "#F26C68",
         borderRadius: 20,
     },
-    Imageouter:{
-        margin:12,
-        width:364,
-        height:290,
-        backgroundColor:"#FFFFFF",
-        borderRadius:20,
+    Imageouter: {
+        margin: 12,
+        width: 364,
+        height: 290,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
     },
-    Image:{
+    Image: {
         width: 200,
         height: 200,
-        marginLeft:82,
-        borderRadius:20,
-        marginTop:10,
+        marginLeft: 82,
+        borderRadius: 20,
+        marginTop: 10,
     },
-    text:{
-        marginTop:8,
+    text: {
+        marginTop: 8,
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
-        color:"#FFFFFF",
+        color: "#FFFFFF",
     },
-    Checkout:{
+    Checkout: {
         margin: 12,
-        marginBottom:-10,
-        marginTop:-5,
+        marginBottom: -10,
+        marginTop: -5,
         width: 364,
         height: 95,
         backgroundColor: "#F26C68",
         borderRadius: 20,
     },
-    checkoutText:{
+    checkoutText: {
         marginTop: 25,
         textAlign: "center",
         fontSize: 30,
         fontWeight: "bold",
         color: "#FFFFFF",
     },
-    AddImage:{
+    AddImage: {
         marginTop: 20,
-        alignSelf:"center",
+        alignSelf: "center",
         width: 150,
         height: 45,
         backgroundColor: "#F26C68",
         borderRadius: 20,
     },
-    AddImageText:{
+    AddImageText: {
         marginTop: 8,
         textAlign: "center",
         fontSize: 24,

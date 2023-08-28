@@ -1,80 +1,107 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Button, View } from "react-native";
+import React, { useState } from "react";
+import { View, Button, Alert, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Text, Image } from "react-native";
 import { CardField, StripeProvider, useStripe } from "@stripe/stripe-react-native";
-import { keys } from "../keys";
+import Navbar from "../components/navbar"; // Import your Navbar component here
 
-const Payment = () => {
-  const stripePublishableKey = keys.public;
+const Payment = ({ route, navigation }) => {
+  const [isCardValid, setIsCardValid] = useState(false);
+  const { confirmPayment } = useStripe();
 
-  return (
-    <StripeProvider publishableKey={stripePublishableKey}>
-      <StripeTest />
-    </StripeProvider>
-  );
-};
-
-const StripeTest = () => {
-  const { confirmPayment, initPaymentSheet, presentPaymentSheet } = useStripe();
-  const [clientSecret, setClientSecret] = useState("");
-
-  useEffect(() => {
-    const fetchPaymentIntent = async () => {
-      try {
-        const response = await fetch("http://your-api-endpoint.com/create-payment-intent", {
-          method: "POST",
-        });
-        const data = await response.json();
-        setClientSecret(data.clientSecret);
-        initPaymentSheet({ paymentIntentClientSecret: data.clientSecret });
-      } catch (error) {
-        console.error("Error fetching payment intent: ", error);
-      }
-    };
-
-    fetchPaymentIntent();
-  }, []);
+  const { item } = route.params;
 
   const handlePayment = async () => {
-    try {
-      const { error } = await confirmPayment(clientSecret, {
-        type: "Card",
-        billingDetails: {
-          email: "test@example.com",
-        },
-      });
+    if (!isCardValid) {
+      Alert.alert("Please enter valid card details.");
+      return;
+    }
 
-      if (error) {
-        Alert.alert("Payment failed. Please try again.");
-      } else {
-        Alert.alert("Payment successful!");
-      }
+    try {
+      // Simulate a payment process here
+      // You can show loading indicators or any other UI as needed
+
+      // Simulating a successful payment
+      Alert.alert("Payment successful!");
     } catch (error) {
       console.error("Error during payment: ", error);
       Alert.alert("Payment failed. Please try again.");
     }
   };
 
+  const handleCardChange = (event) => {
+    setIsCardValid(event.valid);
+  };
+
   return (
     <View>
-      <CardField
-        postalCodeEnabled={false}
-        placeholder={{
-          number: "4242 4242 4242 4242",
-        }}
-        cardStyle={{
-          backgroundColor: "#FFFFFF",
-          textColor: "#000000",
-        }}
-        style={{
-          width: "100%",
-          height: 50,
-          marginVertical: 30,
-        }}
-      />
-      <Button title="Pay" onPress={handlePayment} />
-      <Button title="Present sheet" onPress={() => presentPaymentSheet()} />
+      <Text style={styles.title}>Payment</Text>
+      <View style={styles.detailsContainer}>
+        <Image style={styles.productImage} source={{ uri: item.productImage }} />
+        <Text style={styles.productTitle}>{item.title}</Text>
+      </View>
+      <View style={styles.innerContainer}>
+        <CardField
+          postalCodeEnabled={false}
+          placeholder={{
+            number: "4242 4242 4242 4242",
+          }}
+          style={styles.cardField}
+          onCardChange={handleCardChange}
+        />
+        <Button title="Pay" onPress={handlePayment} />
+      </View>
+      <Navbar navigation={navigation} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#F9F9FB",
+  },
+  title: {
+    marginTop: 80,
+    marginBottom: 20,
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  innerContainer: {
+    width: "80%",
+    margin: 40,
+    marginTop:0,
+    marginBottom: 105,
+    padding: 20,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  detailsContainer:{
+    width: "60%",
+    margin: 80,
+    padding: 20,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  productImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+    resizeMode: "contain",
+  },
+  productTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  cardField: {
+    width: "100%",
+    height: 50,
+    marginBottom: 20,
+  },
+});
 
 export default Payment;

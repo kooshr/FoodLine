@@ -1,7 +1,6 @@
 import React from "react";
-import Icon from 'react-native-vector-icons/Ionicons';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { color } from "react-native-reanimated";
+
 
 const Details = ({ route, navigation }) => {
     const { item } = route.params;
@@ -18,7 +17,7 @@ const Details = ({ route, navigation }) => {
                     {item.title}
                 </Text>
             </View>
-            <Image style={styles.Image} source={item.img} />
+            <Image style={styles.Image} source={{ uri: item.productImage }} />
             <View style={{ display: 'flex', flexDirection: 'row', }}>
                 <View style={styles.outer}>
                     <Text style={styles.subheading}>
@@ -41,7 +40,7 @@ const Details = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={styles.Checkout} onPress={() => navigation.navigate('Payment')} >
+            <TouchableOpacity style={styles.Checkout} onPress={() => navigation.navigate('Payment', { item: item })} >
                 <Text style={styles.checkoutText}>Checkout</Text>
             </TouchableOpacity>
         </View>
