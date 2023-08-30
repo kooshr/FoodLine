@@ -11,6 +11,7 @@ import Payment from "./Screens/Payment";
 import Search from "./Screens/Search"
 import Details from "./Screens/Details";
 import Profile from "./Screens/Profile"
+import Edit from "./Screens/Edit";
 
 import { StyleSheet } from "react-native";
 
@@ -29,6 +30,7 @@ const App = () => {
             <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false,}}/>
             <Stack.Screen name="Payment" component={Payment} options={{headerShown:false,}}/>
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false, }} />
+            <Stack.Screen name="Edit" component={Edit} options={{ headerShown: false, }} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

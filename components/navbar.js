@@ -1,7 +1,8 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-const Navbar = ({navigation}) => {
+
+const Navbar = ({ navigation, email }) => {
     return (
         <View style={styles.navbar}>
             <TouchableOpacity 
@@ -24,7 +25,7 @@ const Navbar = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.home}
-                onPress={() => navigation.navigate('Sell')}
+                onPress={() => navigation.navigate('Sell', { email: email })}
                 >
                 <Image
                     style={styles.homeIcon}

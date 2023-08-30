@@ -1,28 +1,24 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Navbar from "../components/navbar.js";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
 import { db } from "../firebase";
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL,
-    listAll,
-    list,
-    uploadBytesResumable,
-} from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import uuid from "react-native-uuid";
 import { addDoc, collection } from "firebase/firestore";
 
-const Sell = ({ navigation }) => {
+const Sell = ({ route, navigation }) => {
     /*states for keeping track of inputted item info*/
     const [pImage, setpImage] = useState(null);
     const [iName, setiName] = useState(null);
     const [iPrice, setiPrice] = useState(null);
     const [quantity, setQuantity] = useState(null);
+
+    //const email = useState(navigation.email);
+    const { email } = route.params;
+
 
     //handles image picker stuff for picking a photo
     const handleChoosePhoto = async () => {
@@ -43,6 +39,7 @@ const Sell = ({ navigation }) => {
 
     //submitListing uploads the form to firebase
     const submitListing = async () => {
+        console.log(email)
         if (pImage && iName && iPrice && quantity) {
             let c = Math.random().toString(36).slice(2);
             let response = await fetch(pImage);
@@ -63,6 +60,7 @@ const Sell = ({ navigation }) => {
                         quantity: quantity,
                         key: c,
                         timestamp: timestamp,
+                        email:email,
                     }).then((docRef) => {
                         console.log("Doc has been added successfully");
                         console.log(downloadURL)
@@ -77,9 +75,10 @@ const Sell = ({ navigation }) => {
             });
         } else {
             console.log("Error: please try again!");
+            console.log(email)
         }
     };
-
+    
     return (
         <View style={{ backgroundColor: "#F9F9FB" }}>
             <View style={styles.View}>
